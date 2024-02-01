@@ -1,35 +1,42 @@
 console.log("script loaded...");
 
+/* Globals */
 const choices = ["rock", "paper", "scissors"];
+let computerWins = 4;
+let playerWins = 4;
 
 function getComputerChoice() {
   const randomNum = Math.floor(Math.random() * 3);
   return choices[randomNum];
 }
 
-function getPlayerChoice() {
-  let valid = false;
-  let cleanedInp;
-
-  while (valid === false) {
-    const playerInp = prompt("Rock, Paper, or Scissors (Case insensitive): ");
-    cleanedInp = playerInp.toLowerCase();
-    if (
-      //valid answers?
-      cleanedInp === "rock" ||
-      cleanedInp === "paper" ||
-      cleanedInp === "scissors"
-    ) {
-      valid = true;
-    }
-  }
-
-  return cleanedInp;
+function setPlayerChoices() {
+  let choiceButtons = document.getElementsByName("gameOption");
+  choiceButtons.forEach((btn) => {
+    btn.addEventListener("click", () => {
+      playRound(btn.id);
+    });
+  });
 }
 
-function playRound(playerChoice, computerChoice) {
-  let winner; //0-computer, 1-player, 2-tie
+function playRound(playerChoice) {
+  let computerChoice = getComputerChoice();
+  let winner = decideWinner(playerChoice, computerChoice); //0-computer, 1-player, 2-tie
 
+  if (winner === 0) {
+    computerWins++;
+    updateScoresTable("You lose! " + computerChoice + " beats " + playerChoice);
+  } else if (winner === 1) {
+    playerWins++;
+    updateScoresTable("You win! " + playerChoice + " beats " + computerChoice);
+  } else {
+    updateScoresTable("It is a tie!");
+  }
+  // console.log("Score:\nCPU: " + computerWins + "\nPlayer: " + playerWins);
+}
+
+function decideWinner(playerChoice, computerChoice) {
+  let winner;
   //logic for the game
   if (playerChoice === "rock") {
     if (computerChoice === "rock") {
@@ -57,39 +64,27 @@ function playRound(playerChoice, computerChoice) {
     }
   }
 
-  const winningStatements = [
-    "You lose! " + computerChoice + " beats " + playerChoice,
-    "You win! " + playerChoice + " beats " + computerChoice,
-    "It is a tie!",
-  ];
-
-  return [winner, winningStatements[winner]];
+  return winner;
 }
 
-function game() {
-  let computerWins = 0;
-  let playerWins = 0;
+function updateScoresTable(description) {
+  const computerScore = document.getElementById("computerScore");
+  const playerScore = document.getElementById("playerScore");
+  const roundRecap = document.querySelector("#scores");
+  let choiceButtons = document.getElementsByName("gameOption");
+  let choiceDiv = document.getElementById;
 
-  while (computerWins != 3 && playerWins != 3) {
-    console.log("Score:\nCPU: " + computerWins + "\nPlayer: " + playerWins);
-    let computer = getComputerChoice();
-    let player = getPlayerChoice();
-    let winnerStats = playRound(player, computer);
+  roundRecap.textContent = description;
 
-    if (winnerStats[0] === 0) {
-      computerWins++;
-    } else if (winnerStats[0] === 1) {
-      playerWins++;
-    }
-    console.log(winnerStats[1]);
-  }
+  computerScore.textContent = computerWins;
+  playerScore.textContent = playerWins;
 
-  if (playerWins === 3) {
-    console.log("Player wins! You beat the Robot!");
-  } else if (computerWins === 3) {
-    console.log("Computer wins... you suck.");
+  if (computerWins >= 5) {
+    roundRecap.textContent = "Computer Won The Game!";
+  } else if (playerWins >= 5) {
+    roundRecap.textContent = "Player Won The Game!";
   }
 }
 
 //Launches full game
-game();
+setPlayerChoices();

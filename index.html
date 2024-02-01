@@ -4,13 +4,31 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Rock, Paper, Scissors!</title>
-    <script src="script.js"></script>
   </head>
   <body>
-    <nav>Nothing in nav atm!</nav>
+    <!-- <nav>Nothing in nav atm!</nav> -->
     <section class="main">
-      <h1>Please check console for the game!</h1>
-      <h2>Game coming with UI soon!</h2>
+      <h1>Rock, Paper, Scissors</h1>
+      <h3 id="scores"></h3>
+      <div class="scoresTable">
+        <table>
+          <th>Score</th>
+          <tr>
+            <td>Computer:</td>
+            <td id="computerScore">0</td>
+          </tr>
+          <tr>
+            <td>Player:</td>
+            <td id="playerScore">0</td>
+          </tr>
+        </table>
+      </div>
+      <div class="choiceSelection">
+        <button name="gameOption" id="rock">Rock</button>
+        <button name="gameOption" id="paper">Paper</button>
+        <button name="gameOption" id="scissors">Scissors</button>
+      </div>
     </section>
+    <script src="script.js"></script>
   </body>
 </html>
